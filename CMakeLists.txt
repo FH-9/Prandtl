@@ -4,9 +4,9 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CMAKE_CXX_COMPILER ${MPICXX})
-set(MPI_CXX_INCLUDE_PATH "")
-set(MPI_CXX_LIBRARIES "")
+#set(CMAKE_CXX_COMPILER ${MPICXX})
+#set(MPI_CXX_INCLUDE_PATH "")
+#set(MPI_CXX_LIBRARIES "")
 
 # add_definitions(-DHYPERBOLIC)
 add_definitions(-DUSE_FILTER)
@@ -21,6 +21,13 @@ add_definitions(-DPARABOLIC)
 
 project(Prandtl)
 
+find_package(MPI REQUIRED)
+include_directories(${MPI_INCLUDE_PATH})
+set(MPI_CXX_LIBRARIES ${MPI_CXX_LIBRARIES})
+
+message(STATUS "MPI CXX COMPILER: ${MPI_CXX_COMPILER}")
+message(STATUS "MPI INCLUDE PATH: ${MPI_INCLUDE_PATH}")
+message(STATUS "MPI LIBRARIES: ${MPI_CXX_LIBRARIES}")
 
 add_executable(${PROJECT_NAME} main.cpp)
 
@@ -89,6 +96,6 @@ target_link_directories(${PROJECT_NAME}
     PUBLIC ${CMAKE_SOURCE_DIR}/libs/metis-5.1.0/lib
     )
 
-target_link_libraries(${PROJECT_NAME} mfem HYPRE  metis)
+target_link_libraries(${PROJECT_NAME} mfem HYPRE  metis MPI::MPI_CXX)
 
 
